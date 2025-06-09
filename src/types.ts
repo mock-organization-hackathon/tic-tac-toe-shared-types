@@ -1,3 +1,34 @@
+// CSV Export Types
+export interface CSVExportOptions {
+  includeHeaders?: boolean;
+  dateRange?: {
+    startDate: string;
+    endDate: string;
+  };
+  sortBy?: 'wins' | 'totalGames' | 'winRate';
+  sortOrder?: 'asc' | 'desc';
+  limit?: number;
+}
+
+export interface CSVExportResponse {
+  success: boolean;
+  data?: string; // CSV content as string
+  filename?: string;
+  error?: string;
+  timestamp: string;
+}
+
+export interface LeaderboardCSVData {
+  rank: number;
+  username: string;
+  wins: number;
+  losses: number;
+  draws: number;
+  totalGames: number;
+  winRate: string; // Formatted as percentage
+  lastActive: string; // Formatted date string
+}
+
 // Player and Game State Types
 export type Player = 'X' | 'O';
 export type Cell = Player | null;
@@ -165,4 +196,4 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
-export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>; 
+export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>;
