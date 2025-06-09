@@ -1,3 +1,19 @@
+// Player colors available for selection
+export const PLAYER_COLORS = {
+  RED: '#FF6B6B',
+  BLUE: '#4ECDC4',
+  GREEN: '#45B7D1',
+  PURPLE: '#96CEB4',
+  ORANGE: '#FECA57',
+  PINK: '#FF9FF3'
+} as const;
+
+// Default colors for X and O players when no color is selected
+export const DEFAULT_PLAYER_COLORS = {
+  X: PLAYER_COLORS.RED,
+  O: PLAYER_COLORS.BLUE
+} as const;
+
 // Game Configuration
 export const GAME_CONFIG = {
   BOARD_SIZE: {
@@ -159,4 +175,4 @@ export const UI_CONFIG = {
     LG: 1024,
     XL: 1280
   }
-} as const; 
+} as const;
