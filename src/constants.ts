@@ -1,162 +1,118 @@
-// Game Configuration
-export const GAME_CONFIG = {
-  BOARD_SIZE: {
-    CLASSIC: 9,
-    GIANT: 25,
-    ULTIMATE: 81
+// Board configuration
+export const BOARD_SIZE = 9;
+export const GRID_SIZE = 3;
+export const WINNING_COMBINATIONS = [
+  // Rows
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  // Columns
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  // Diagonals
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+// Game modes
+export const GAME_MODES = {
+  HUMAN_VS_HUMAN: 'human-vs-human',
+  HUMAN_VS_AI: 'human-vs-ai',
+  AI_VS_AI: 'ai-vs-ai',
+} as const;
+
+// AI difficulty levels
+export const AI_DIFFICULTY = {
+  EASY: 'easy',
+  MEDIUM: 'medium',
+  HARD: 'hard',
+  EXPERT: 'expert',
+} as const;
+
+// AI difficulty configurations
+export const AI_DIFFICULTY_CONFIG = {
+  [AI_DIFFICULTY.EASY]: {
+    name: 'Easy',
+    description: 'Makes random moves most of the time',
+    randomMoveChance: 0.7,
+    maxDepth: 2,
   },
-  WINNING_LINES: {
-    CLASSIC: [
-      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-      [0, 4, 8], [2, 4, 6]             // Diagonals
-    ],
-    GIANT: [
-      // Rows
-      [0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24],
-      // Columns
-      [0, 5, 10, 15, 20], [1, 6, 11, 16, 21], [2, 7, 12, 17, 22], [3, 8, 13, 18, 23], [4, 9, 14, 19, 24],
-      // Diagonals
-      [0, 6, 12, 18, 24], [4, 8, 12, 16, 20]
-    ]
+  [AI_DIFFICULTY.MEDIUM]: {
+    name: 'Medium',
+    description: 'Balanced between random and strategic moves',
+    randomMoveChance: 0.3,
+    maxDepth: 4,
   },
-  MAX_PLAYERS: {
-    CLASSIC: 2,
-    TOURNAMENT: 8
+  [AI_DIFFICULTY.HARD]: {
+    name: 'Hard',
+    description: 'Mostly strategic with occasional random moves',
+    randomMoveChance: 0.1,
+    maxDepth: 6,
   },
-  TIME_LIMITS: {
-    TIMED_MOVE: 30 * 1000,      // 30 seconds per move
-    GAME_TIMEOUT: 15 * 60 * 1000, // 15 minutes total
-    RECONNECT_TIMEOUT: 2 * 60 * 1000 // 2 minutes to reconnect
-  }
-} as const;
-
-// Socket Event Names
-export const SOCKET_EVENTS = {
-  // Connection
-  CONNECTION: 'connection',
-  DISCONNECT: 'disconnect',
-  
-  // Room Management
-  JOIN_ROOM: 'join-room',
-  LEAVE_ROOM: 'leave-room',
-  CREATE_ROOM: 'create-room',
-  ROOM_JOINED: 'room-joined',
-  ROOM_LEFT: 'room-left',
-  ROOM_CREATED: 'room-created',
-  
-  // Game Events
-  MAKE_MOVE: 'make-move',
-  PLAYER_READY: 'player-ready',
-  START_GAME: 'start-game',
-  GAME_UPDATED: 'game-updated',
-  MOVE_MADE: 'move-made',
-  GAME_STARTED: 'game-started',
-  GAME_ENDED: 'game-ended',
-  
-  // Player Events
-  PLAYER_JOINED: 'player-joined',
-  PLAYER_LEFT: 'player-left',
-  
-  // Chat
-  SEND_MESSAGE: 'send-message',
-  MESSAGE_RECEIVED: 'message-received',
-  
-  // Error Handling
-  ERROR: 'error'
-} as const;
-
-// Error Codes
-export const ERROR_CODES = {
-  // Authentication
-  UNAUTHORIZED: 'UNAUTHORIZED',
-  INVALID_TOKEN: 'INVALID_TOKEN',
-  
-  // Room Errors
-  ROOM_NOT_FOUND: 'ROOM_NOT_FOUND',
-  ROOM_FULL: 'ROOM_FULL',
-  ROOM_PRIVATE: 'ROOM_PRIVATE',
-  INVALID_PASSWORD: 'INVALID_PASSWORD',
-  ALREADY_IN_ROOM: 'ALREADY_IN_ROOM',
-  NOT_IN_ROOM: 'NOT_IN_ROOM',
-  
-  // Game Errors
-  GAME_NOT_FOUND: 'GAME_NOT_FOUND',
-  GAME_NOT_STARTED: 'GAME_NOT_STARTED',
-  GAME_FINISHED: 'GAME_FINISHED',
-  NOT_YOUR_TURN: 'NOT_YOUR_TURN',
-  INVALID_MOVE: 'INVALID_MOVE',
-  POSITION_OCCUPIED: 'POSITION_OCCUPIED',
-  
-  // Player Errors
-  PLAYER_NOT_FOUND: 'PLAYER_NOT_FOUND',
-  INVALID_PLAYER_NAME: 'INVALID_PLAYER_NAME',
-  PLAYER_NOT_READY: 'PLAYER_NOT_READY',
-  
-  // General
-  INVALID_REQUEST: 'INVALID_REQUEST',
-  SERVER_ERROR: 'SERVER_ERROR',
-  VALIDATION_ERROR: 'VALIDATION_ERROR'
-} as const;
-
-// Game Messages
-export const GAME_MESSAGES = {
-  WAITING_FOR_PLAYER: 'Waiting for another player to join...',
-  GAME_STARTING: 'Game is starting!',
-  YOUR_TURN: "It's your turn!",
-  OPPONENT_TURN: "Waiting for opponent's move...",
-  GAME_WON: 'Congratulations! You won!',
-  GAME_LOST: 'Game over. Better luck next time!',
-  GAME_DRAW: "It's a draw!",
-  PLAYER_DISCONNECTED: 'Player disconnected. Game paused.',
-  PLAYER_RECONNECTED: 'Player reconnected. Game resumed.',
-  GAME_ABANDONED: 'Game has been abandoned.'
-} as const;
-
-// API Endpoints
-export const API_ENDPOINTS = {
-  // Authentication
-  LOGIN: '/api/auth/login',
-  LOGOUT: '/api/auth/logout',
-  REGISTER: '/api/auth/register',
-  
-  // Rooms
-  ROOMS: '/api/rooms',
-  ROOM_BY_ID: (id: string) => `/api/rooms/${id}`,
-  JOIN_ROOM: (id: string) => `/api/rooms/${id}/join`,
-  LEAVE_ROOM: (id: string) => `/api/rooms/${id}/leave`,
-  
-  // Games
-  GAMES: '/api/games',
-  GAME_BY_ID: (id: string) => `/api/games/${id}`,
-  GAME_MOVES: (id: string) => `/api/games/${id}/moves`,
-  
-  // Players
-  PLAYERS: '/api/players',
-  PLAYER_STATS: (id: string) => `/api/players/${id}/stats`,
-  LEADERBOARD: '/api/leaderboard',
-  
-  // Health
-  HEALTH: '/api/health'
-} as const;
-
-// UI Constants
-export const UI_CONFIG = {
-  ANIMATION_DURATION: 300,
-  TOAST_DURATION: 3000,
-  BOARD_CELL_SIZE: 80,
-  COLORS: {
-    PRIMARY: '#3B82F6',
-    SECONDARY: '#10B981',
-    DANGER: '#EF4444',
-    WARNING: '#F59E0B',
-    SUCCESS: '#10B981',
-    INFO: '#3B82F6'
+  [AI_DIFFICULTY.EXPERT]: {
+    name: 'Expert',
+    description: 'Always plays optimally',
+    randomMoveChance: 0,
+    maxDepth: 9,
   },
-  BREAKPOINTS: {
-    SM: 640,
-    MD: 768,
-    LG: 1024,
-    XL: 1280
-  }
-} as const; 
+} as const;
+
+// Minimax scoring constants
+export const MINIMAX_SCORES = {
+  WIN: 10,
+  LOSE: -10,
+  DRAW: 0,
+  INVALID_MOVE: -100,
+} as const;
+
+// Minimax configuration
+export const MINIMAX_CONFIG = {
+  MAX_DEPTH: 9,
+  ALPHA_BETA_PRUNING: true,
+  DEPTH_PENALTY: 1, // Subtract from score based on depth to prefer quicker wins
+  POSITION_WEIGHTS: [
+    3, 2, 3,
+    2, 4, 2,
+    3, 2, 3,
+  ], // Center is most valuable, corners second, edges least
+} as const;
+
+// AI timing constants
+export const AI_TIMING = {
+  MIN_THINKING_TIME: 500, // Minimum time AI appears to "think"
+  MAX_THINKING_TIME: 2000, // Maximum thinking time for realism
+  MOVE_ANIMATION_DELAY: 300,
+} as const;
+
+// Player symbols
+export const PLAYERS = {
+  X: 'X',
+  O: 'O',
+} as const;
+
+// Game status constants
+export const GAME_STATUS = {
+  PLAYING: 'playing',
+  WON: 'won',
+  DRAW: 'draw',
+} as const;
+
+// Default game configuration
+export const DEFAULT_GAME_CONFIG = {
+  boardSize: BOARD_SIZE,
+  mode: GAME_MODES.HUMAN_VS_HUMAN,
+  aiDifficulty: AI_DIFFICULTY.MEDIUM,
+  enableSounds: true,
+  enableAnimations: true,
+  aiThinkingDelay: AI_TIMING.MIN_THINKING_TIME,
+} as const;
+
+// Error messages
+export const ERROR_MESSAGES = {
+  INVALID_MOVE: 'Invalid move',
+  CELL_OCCUPIED: 'Cell is already occupied',
+  GAME_OVER: 'Game is already over',
+  INVALID_POSITION: 'Invalid board position',
+  AI_ERROR: 'AI move calculation failed',
+} as const;

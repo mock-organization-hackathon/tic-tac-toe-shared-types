@@ -1,168 +1,98 @@
-// Player and Game State Types
+// Core game types
 export type Player = 'X' | 'O';
 export type Cell = Player | null;
 export type Board = Cell[];
 
-export interface GameState {
-  id: string;
+// Game state types
+export type GameStatus = 'playing' | 'won' | 'draw';
+export type GameMode = 'human-vs-human' | 'human-vs-ai' | 'ai-vs-ai';
+
+// AI player types
+export type AIPlayer = {
+  symbol: Player;
+  difficulty: AIDifficulty;
+  isThinking: boolean;
+};
+
+export type AIDifficulty = 'easy' | 'medium' | 'hard' | 'expert';
+
+// Minimax algorithm types
+export type MinimaxResult = {
+  score: number;
+  move: number;
+  depth: number;
+  nodesEvaluated: number;
+};
+
+export type MinimaxNode = {
+  board: Board;
+  depth: number;
+  isMaximizing: boolean;
+  alpha?: number;
+  beta?: number;
+};
+
+export type GameTreeNode = {
+  board: Board;
+  score: number;
+  move: number;
+  children: GameTreeNode[];
+  isMaximizing: boolean;
+  depth: number;
+};
+
+// Game state
+export type GameState = {
   board: Board;
   currentPlayer: Player;
   status: GameStatus;
   winner: Player | null;
-  winningLine: readonly number[] | null;
-  players: GamePlayer[];
-  createdAt: Date;
-  updatedAt: Date;
-  moveHistory: GameMove[];
-}
-
-export interface GamePlayer {
-  id: string;
-  name: string;
-  symbol: Player;
-  isReady: boolean;
-  score: number;
-}
-
-export interface GameMove {
-  playerId: string;
-  playerSymbol: Player;
-  position: number;
-  timestamp: Date;
-}
-
-export type GameStatus = 
-  | 'waiting'    // Waiting for players to join
-  | 'ready'      // Players joined, waiting to start
-  | 'playing'    // Game in progress
-  | 'finished'   // Game completed
-  | 'abandoned'; // Game abandoned
-
-// Room and Lobby Types
-export interface Room {
-  id: string;
-  name: string;
-  hostId: string;
-  maxPlayers: number;
-  currentPlayerCount: number;
-  isPrivate: boolean;
-  password?: string;
-  gameMode: GameMode;
-  status: RoomStatus;
-  createdAt: Date;
-}
-
-export type RoomStatus = 'open' | 'full' | 'playing' | 'closed';
-
-export type GameMode = 
-  | 'classic'      // Standard 3x3
-  | 'giant'        // 5x5 board
-  | 'ultimate'     // 9 mini-boards
-  | 'timed'        // Time-limited moves
-  | 'tournament';  // Best of series
-
-// Socket Events
-export interface SocketEvents {
-  // Client to Server
-  'join-room': (roomId: string, password?: string) => void;
-  'leave-room': (roomId: string) => void;
-  'create-room': (roomData: CreateRoomData) => void;
-  'make-move': (gameId: string, position: number) => void;
-  'player-ready': (gameId: string) => void;
-  'start-game': (gameId: string) => void;
-  'send-message': (roomId: string, message: ChatMessage) => void;
-  
-  // Server to Client
-  'room-joined': (room: Room, player: GamePlayer) => void;
-  'room-left': (roomId: string) => void;
-  'room-created': (room: Room) => void;
-  'game-updated': (gameState: GameState) => void;
-  'move-made': (move: GameMove, gameState: GameState) => void;
-  'player-joined': (player: GamePlayer) => void;
-  'player-left': (playerId: string) => void;
-  'game-started': (gameState: GameState) => void;
-  'game-ended': (gameState: GameState, stats: GameStats) => void;
-  'message-received': (message: ChatMessage) => void;
-  'error': (error: ErrorMessage) => void;
-}
-
-export interface CreateRoomData {
-  name: string;
-  maxPlayers: number;
-  isPrivate: boolean;
-  password?: string;
-  gameMode: GameMode;
-}
-
-export interface ChatMessage {
-  id: string;
-  playerId: string;
-  playerName: string;
-  message: string;
-  timestamp: Date;
-  type: 'chat' | 'system' | 'game';
-}
-
-export interface ErrorMessage {
-  code: string;
-  message: string;
-  details?: any;
-}
-
-// Statistics and Leaderboard
-export interface PlayerStats {
-  playerId: string;
-  playerName: string;
-  gamesPlayed: number;
-  gamesWon: number;
-  gamesLost: number;
-  gamesDraw: number;
-  winRate: number;
-  averageGameDuration: number;
-  favoriteGameMode: GameMode;
-  totalPlayTime: number;
-  streak: {
-    current: number;
-    best: number;
-    type: 'win' | 'loss';
-  };
-}
-
-export interface GameStats {
-  duration: number;
-  totalMoves: number;
-  winner: GamePlayer | null;
-  loser: GamePlayer | null;
-  gameMode: GameMode;
-  completedAt: Date;
-}
-
-export interface LeaderboardEntry {
-  rank: number;
-  player: GamePlayer;
-  stats: PlayerStats;
-}
-
-// API Response Types
-export interface ApiResponse<T = any> {
-  success: boolean;
-  data?: T;
-  error?: ErrorMessage;
-  timestamp: Date;
-}
-
-export interface PaginatedResponse<T> extends ApiResponse<T[]> {
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
-
-// Utility Types
-export type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+  mode: GameMode;
+  aiPlayer?: AIPlayer;
+  moveHistory: number[];
+  lastMove?: number;
 };
 
-export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>; 
+// Move validation
+export type MoveValidation = {
+  isValid: boolean;
+  error?: string;
+};
+
+// Game statistics
+export type GameStats = {
+  totalGames: number;
+  wins: { X: number; O: number };
+  draws: number;
+  aiWins?: number;
+  humanWins?: number;
+};
+
+// Configuration types
+export type GameConfig = {
+  boardSize: number;
+  mode: GameMode;
+  aiDifficulty?: AIDifficulty;
+  enableSounds?: boolean;
+  enableAnimations?: boolean;
+  aiThinkingDelay?: number;
+};
+
+// Event types
+export type GameEvent = 
+  | { type: 'MOVE'; payload: { position: number; player: Player } }
+  | { type: 'RESET' }
+  | { type: 'CHANGE_MODE'; payload: { mode: GameMode } }
+  | { type: 'SET_AI_DIFFICULTY'; payload: { difficulty: AIDifficulty } }
+  | { type: 'AI_THINKING'; payload: { isThinking: boolean } };
+
+// Utility types
+export type Position = {
+  row: number;
+  col: number;
+};
+
+export type WinningLine = {
+  positions: number[];
+  player: Player;
+};
