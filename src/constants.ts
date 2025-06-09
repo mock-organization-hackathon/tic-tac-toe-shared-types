@@ -1,3 +1,82 @@
+import { PlayerColor } from './types';
+
+// Color Constants
+export const COLORS = {
+  // Primary Theme Colors
+  PRIMARY: '#3B82F6',
+  SECONDARY: '#10B981',
+  ACCENT: '#8B5CF6',
+  
+  // Semantic Colors
+  SUCCESS: '#10B981',
+  WARNING: '#F59E0B',
+  ERROR: '#EF4444',
+  INFO: '#3B82F6',
+  
+  // Neutral Colors
+  WHITE: '#FFFFFF',
+  BLACK: '#000000',
+  GRAY: {
+    50: '#F9FAFB',
+    100: '#F3F4F6',
+    200: '#E5E7EB',
+    300: '#D1D5DB',
+    400: '#9CA3AF',
+    500: '#6B7280',
+    600: '#4B5563',
+    700: '#374151',
+    800: '#1F2937',
+    900: '#111827'
+  },
+  
+  // Player Colors
+  PLAYER: {
+    X: '#EF4444',     // Red
+    O: '#3B82F6',     // Blue
+    TRIANGLE: '#10B981', // Green
+    SQUARE: '#F59E0B',   // Orange
+    STAR: '#8B5CF6',     // Purple
+    DIAMOND: '#EC4899',  // Pink
+    CIRCLE: '#06B6D4',   // Cyan
+    HEART: '#F97316'     // Orange-red
+  } as Record<PlayerColor, string>,
+  
+  // Game State Colors
+  BOARD: {
+    BACKGROUND: '#F3F4F6',
+    BORDER: '#D1D5DB',
+    CELL_EMPTY: '#FFFFFF',
+    CELL_HOVER: '#F9FAFB',
+    WINNING_LINE: '#FEF3C7'
+  }
+} as const;
+
+// Theme Configuration
+export const THEMES = {
+  LIGHT: {
+    name: 'light',
+    colors: {
+      background: COLORS.WHITE,
+      surface: COLORS.GRAY[50],
+      text: COLORS.GRAY[900],
+      textSecondary: COLORS.GRAY[600],
+      border: COLORS.GRAY[200],
+      accent: COLORS.PRIMARY
+    }
+  },
+  DARK: {
+    name: 'dark',
+    colors: {
+      background: COLORS.GRAY[900],
+      surface: COLORS.GRAY[800],
+      text: COLORS.WHITE,
+      textSecondary: COLORS.GRAY[300],
+      border: COLORS.GRAY[700],
+      accent: COLORS.PRIMARY
+    }
+  }
+} as const;
+
 // Game Configuration
 export const GAME_CONFIG = {
   BOARD_SIZE: {
@@ -159,4 +238,4 @@ export const UI_CONFIG = {
     LG: 1024,
     XL: 1280
   }
-} as const; 
+} as const;
