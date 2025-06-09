@@ -1,3 +1,18 @@
+import { PlayerColor } from './types';
+
+export const PLAYER_COLORS: Record<PlayerColor, string> = {
+  red: '#FF6B6B',
+  blue: '#4DABF7',
+  green: '#51CF66',
+  purple: '#9775FA',
+  orange: '#FF922B',
+  pink: '#F783AC'
+};
+
+export const DEFAULT_PLAYER_COLORS: PlayerColor[] = ['red', 'blue'];
+
+export const MAX_PLAYERS = 2;
+
 // Game Configuration
 export const GAME_CONFIG = {
   BOARD_SIZE: {
@@ -159,4 +174,4 @@ export const UI_CONFIG = {
     LG: 1024,
     XL: 1280
   }
-} as const; 
+} as const;

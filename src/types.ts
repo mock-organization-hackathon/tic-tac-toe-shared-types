@@ -1,5 +1,17 @@
 // Player and Game State Types
-export type Player = 'X' | 'O';
+export type Player = string; // Color-based player identification
+export type PlayerColor = 'red' | 'blue' | 'green' | 'purple' | 'orange' | 'pink';
+
+export interface ColorSelection {
+  playerId: string;
+  color: PlayerColor;
+}
+
+export interface ColorSelectionEvent {
+  type: 'COLOR_SELECTED';
+  payload: ColorSelection;
+}
+
 export type Cell = Player | null;
 export type Board = Cell[];
 
@@ -19,7 +31,8 @@ export interface GameState {
 export interface GamePlayer {
   id: string;
   name: string;
-  symbol: Player;
+  color: PlayerColor;
+  symbol?: 'X' | 'O'; // Deprecated: maintained for backward compatibility
   isReady: boolean;
   score: number;
 }
@@ -165,4 +178,4 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
-export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>; 
+export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>;
