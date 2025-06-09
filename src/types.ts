@@ -1,5 +1,6 @@
 // Player and Game State Types
 export type Player = 'X' | 'O';
+export type PlayerColor = 'red' | 'blue' | 'green' | 'yellow' | 'purple' | 'orange';
 export type Cell = Player | null;
 export type Board = Cell[];
 
@@ -20,6 +21,7 @@ export interface GamePlayer {
   id: string;
   name: string;
   symbol: Player;
+  color: PlayerColor;
   isReady: boolean;
   score: number;
 }
@@ -70,6 +72,7 @@ export interface SocketEvents {
   'make-move': (gameId: string, position: number) => void;
   'player-ready': (gameId: string) => void;
   'start-game': (gameId: string) => void;
+  'select-color': (gameId: string, color: PlayerColor) => void;
   'send-message': (roomId: string, message: ChatMessage) => void;
   
   // Server to Client
@@ -80,6 +83,7 @@ export interface SocketEvents {
   'move-made': (move: GameMove, gameState: GameState) => void;
   'player-joined': (player: GamePlayer) => void;
   'player-left': (playerId: string) => void;
+  'color-selected': (playerId: string, color: PlayerColor) => void;
   'game-started': (gameState: GameState) => void;
   'game-ended': (gameState: GameState, stats: GameStats) => void;
   'message-received': (message: ChatMessage) => void;
@@ -165,4 +169,4 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
-export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>; 
+export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>;

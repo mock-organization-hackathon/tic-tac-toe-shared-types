@@ -1,3 +1,17 @@
+import { PlayerColor } from './types';
+
+// Player Color Configuration
+export const PLAYER_COLORS: Record<PlayerColor, { name: string; hex: string; rgb: string }> = {
+  red: { name: 'Red', hex: '#FF4444', rgb: 'rgb(255, 68, 68)' },
+  blue: { name: 'Blue', hex: '#4444FF', rgb: 'rgb(68, 68, 255)' },
+  green: { name: 'Green', hex: '#44FF44', rgb: 'rgb(68, 255, 68)' },
+  yellow: { name: 'Yellow', hex: '#FFFF44', rgb: 'rgb(255, 255, 68)' },
+  purple: { name: 'Purple', hex: '#FF44FF', rgb: 'rgb(255, 68, 255)' },
+  orange: { name: 'Orange', hex: '#FF8844', rgb: 'rgb(255, 136, 68)' }
+};
+
+export const DEFAULT_PLAYER_COLORS: PlayerColor[] = ['red', 'blue'];
+
 // Game Configuration
 export const GAME_CONFIG = {
   BOARD_SIZE: {
@@ -159,4 +173,4 @@ export const UI_CONFIG = {
     LG: 1024,
     XL: 1280
   }
-} as const; 
+} as const;
