@@ -1,7 +1,25 @@
 // Player and Game State Types
+import { PLAYER_COLORS } from './constants';
+
 export type Player = 'X' | 'O';
 export type Cell = Player | null;
 export type Board = Cell[];
+
+export type PlayerColor = typeof PLAYER_COLORS[keyof typeof PLAYER_COLORS];
+
+export interface PlayerColorSelection {
+  playerId: string;
+  color: PlayerColor;
+}
+
+export interface ExtendedPlayer {
+  id: string;
+  name: string;
+  symbol: Player;
+  color: PlayerColor;
+  isReady: boolean;
+  score: number;
+}
 
 export interface GameState {
   id: string;
@@ -22,6 +40,17 @@ export interface GamePlayer {
   symbol: Player;
   isReady: boolean;
   score: number;
+  color?: PlayerColor;
+}
+
+export interface ColorSelectionValidation {
+  isValid: boolean;
+  conflictingPlayerId?: string;
+  availableColors: PlayerColor[];
+}
+
+export interface GameStateWithColors extends GameState {
+  players: ExtendedPlayer[];
 }
 
 export interface GameMove {
@@ -165,4 +194,4 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
-export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>; 
+export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>;
