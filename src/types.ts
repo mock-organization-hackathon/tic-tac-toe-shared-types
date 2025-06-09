@@ -165,4 +165,51 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
-export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>; 
+export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>;
+
+// CSV Export Types
+export interface CsvExportRequest {
+  leaderboardType: 'global' | 'monthly' | 'weekly';
+  dateRange?: {
+    startDate: string;
+    endDate: string;
+  };
+  includeColumns: CsvColumnConfig[];
+  formatOptions?: CsvFormatOptions;
+}
+
+export interface CsvExportResponse {
+  success: boolean;
+  csvData?: string;
+  fileName: string;
+  recordCount: number;
+  error?: string;
+}
+
+export interface CsvColumnConfig {
+  field: keyof LeaderboardEntry | keyof PlayerStats;
+  header: string;
+  enabled: boolean;
+  order: number;
+  formatter?: CsvFieldFormatter;
+}
+
+export interface CsvFormatOptions {
+  delimiter: ',' | ';' | '\t';
+  includeHeaders: boolean;
+  dateFormat: 'ISO' | 'US' | 'EU';
+  numberFormat: 'decimal' | 'integer';
+  encoding: 'UTF-8' | 'UTF-16';
+}
+
+export type CsvFieldFormatter = (value: any) => string;
+
+export interface CsvExportStatus {
+  exportId: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  progress: number;
+  createdAt: string;
+  completedAt?: string;
+  downloadUrl?: string;
+  error?: string;
+}
