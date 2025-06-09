@@ -38,6 +38,38 @@ export type GameStatus =
   | 'finished'   // Game completed
   | 'abandoned'; // Game abandoned
 
+// Authentication Types
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  createdAt: Date;
+}
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  success: boolean;
+  user?: User;
+  token?: string;
+  message: string;
+}
+
+export interface RegisterRequest {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface AuthenticationError {
+  type: string;
+  message: string;
+}
+
 // Room and Lobby Types
 export interface Room {
   id: string;
@@ -71,6 +103,9 @@ export interface SocketEvents {
   'player-ready': (gameId: string) => void;
   'start-game': (gameId: string) => void;
   'send-message': (roomId: string, message: ChatMessage) => void;
+  'login': (loginData: LoginRequest) => void;
+  'logout': () => void;
+  'register': (registerData: RegisterRequest) => void;
   
   // Server to Client
   'room-joined': (room: Room, player: GamePlayer) => void;
@@ -83,6 +118,8 @@ export interface SocketEvents {
   'game-started': (gameState: GameState) => void;
   'game-ended': (gameState: GameState, stats: GameStats) => void;
   'message-received': (message: ChatMessage) => void;
+  'authentication-success': (response: LoginResponse) => void;
+  'authentication-failed': (error: AuthenticationError) => void;
   'error': (error: ErrorMessage) => void;
 }
 
@@ -165,4 +202,4 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
-export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>; 
+export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>;
