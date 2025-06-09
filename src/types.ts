@@ -1,3 +1,25 @@
+// Color and Theme Types
+export type PlayerColor = {
+  primary: string;
+  secondary: string;
+  background: string;
+  text: string;
+};
+
+export type ColorTheme = 'light' | 'dark' | 'custom';
+
+export type PlayerColorPreset = 
+  | 'classic-red'
+  | 'classic-blue'
+  | 'ocean-blue'
+  | 'forest-green'
+  | 'sunset-orange'
+  | 'royal-purple'
+  | 'crimson-red'
+  | 'golden-yellow'
+  | 'midnight-black'
+  | 'custom';
+
 // Player and Game State Types
 export type Player = 'X' | 'O';
 export type Cell = Player | null;
@@ -22,6 +44,8 @@ export interface GamePlayer {
   symbol: Player;
   isReady: boolean;
   score: number;
+  colorPreset: PlayerColorPreset;
+  customColors?: PlayerColor;
 }
 
 export interface GameMove {
@@ -165,4 +189,4 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
-export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>; 
+export type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>;
